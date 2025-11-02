@@ -20,19 +20,38 @@ A powerful desktop utility for ARC Raiders that automatically detects item popup
 
 ## Installation
 
-1. Clone this repository:
+1. **Install uv** (Python package manager):
+   
+   On Windows (PowerShell):
+   ```powershell
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+   
+   On macOS/Linux:
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+   
+   Or with pip:
+   ```bash
+   pip install uv
+   ```
+   
+   More info: https://docs.astral.sh/uv/getting-started/installation/
+
+2. Clone this repository:
    ```bash
    git clone https://github.com/onycher/arc-tools.git
    cd arc-tools
    ```
 
-2. Install Tesseract OCR:
+3. Install Tesseract OCR:
    - Download from: https://github.com/UB-Mannheim/tesseract/wiki
    - Add to your system PATH
 
-3. Place the `actions.png` template image in the root directory
+4. Place the `actions.png` template image in the root directory or use the default one provided in the repository if it works for you.
 
-**Note**: This project uses `uv` for dependency management. Ensure `uv` is installed on your system.
+**Note**: `uv` will automatically handle all Python dependencies when you run the tool.
 
 ## Usage
 
