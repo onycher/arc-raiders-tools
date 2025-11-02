@@ -68,7 +68,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
     # Create panel
     panel = Panel(
         Group(*content),
-        title="[bold green]🤖 ARK Raiders Item Info[/bold green]",
+        title="[bold green]🤖 ARC Raiders Item Info[/bold green]",
         border_style="green",
         padding=(1, 2),
     )

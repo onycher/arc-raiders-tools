@@ -7,7 +7,7 @@ from constants import ITEM_DATA_PATH, WORKBENCH_DATA_PATH, QUEST_DATA_PATH
 
 
 class ArcData:
-    """Class to handle ARK data loading and querying."""
+    """Class to handle ARC data loading and querying."""
 
     def __init__(self) -> None:
         """Initialize ArcData by loading JSON data."""

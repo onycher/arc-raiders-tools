@@ -46,7 +46,7 @@ def on_hotkey_activate(data: ArcData, console: Console) -> None:
 
 def quit_app(console: Console) -> None:
     """Quit the application."""
-    console.print("[bold red]Exiting ARK Raiders Tool. Goodbye![/bold red]")
+    console.print("[bold red]Exiting ARC Raiders Tool. Goodbye![/bold red]")
     logging.info("Quit hotkey pressed.")
     sys.exit(0)
 
@@ -64,7 +64,7 @@ def main() -> None:
         ) as h:
             h.join()
     except KeyboardInterrupt:
-        console.print("[bold red]Exiting ARK Tool. Goodbye![/bold red]")
+        console.print("[bold red]Exiting ARC Raiders Tool. Goodbye![/bold red]")
         logging.info("Keyboard interrupt detected.")
     except Exception as e:
         logging.error(f"An error occurred: {e}")

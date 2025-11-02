@@ -1,6 +1,6 @@
-# 🤖 ARK Raiders Tool
+# 🤖 ARC Raiders Tool
 
-A powerful desktop utility for ARK Raiders that automatically detects item popups on screen and displays detailed information about items, including their dependencies for quests and hideout modules.
+A powerful desktop utility for ARC Raiders that automatically detects item popups on screen and displays detailed information about items, including their dependencies for quests and hideout modules.
 
 ## Features
 
@@ -22,8 +22,8 @@ A powerful desktop utility for ARK Raiders that automatically detects item popup
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/ark-raiders-tool.git
-   cd ark-raiders-tool
+   git clone https://github.com/onycher/arc-tools.git
+   cd arc-tools
    ```
 
 2. Install Tesseract OCR:
@@ -41,7 +41,7 @@ Run the tool:
 uv run main.py
 ```
 
-The tool will start in the background. When you see an item popup in ARK Raiders:
+The tool will start in the background. When you see an item popup in ARC Raiders:
 
 1. Press **Ctrl+Alt+S** to scan the popup
 2. View the detailed item information in the console
@@ -54,7 +54,7 @@ The tool will start in the background. When you see an item popup in ARK Raiders
 
 ## Configuration
 
-The tool uses the following data files from the ARK Data Compendium:
+The tool uses the following data files from the ARC Data Compendium:
 - `Arc-Data-Compendium/src/data/items/itemData.json`
 - `Arc-Data-Compendium/src/data/quests/questData.json`
 - `Arc-Data-Compendium/src/data/workbenches/workbenchData.json`
@@ -92,9 +92,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Credits
 
 - Built with OpenCV, Tesseract, Rich, and other Python libraries
-- Data sourced from the ARK Data Compendium
-- Inspired by the ARK Raiders community
+- Data sourced from the ARC Data Compendium
+- Inspired by the ARC Raiders community
 
 ---
 
-**Note**: This tool is for educational and personal use. Ensure compliance with ARK Raiders terms of service.
+**Note**: This tool is for educational and personal use. Ensure compliance with ARC Raiders terms of service.
