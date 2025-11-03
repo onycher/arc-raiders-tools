@@ -4,11 +4,10 @@ from pathlib import Path
 TEMPLATE_IMAGE_PATH = "actions.png"
 
 # Data paths
-ITEM_DATA_PATH = Path("Arc-Data-Compendium/src/data/items/itemData.json")
-WORKBENCH_DATA_PATH = Path(
-    "Arc-Data-Compendium/src/data/workbenches/workbenchData.json"
-)
-QUEST_DATA_PATH = Path("Arc-Data-Compendium/src/data/quests/questData.json")
+ITEM_DATA_PATH = Path("arcraiders-data/items.json")
+WORKBENCH_DATA_PATH = Path("arcraiders-data/hideoutModules.json")
+QUEST_DATA_PATH = Path("arcraiders-data/quests.json")
+PROJECTS_DATA_PATH = Path("arcraiders-data/projects.json")
 
 # Hotkey
 HOTKEY_COMBINATION = "<ctrl>+<alt>+s"

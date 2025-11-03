@@ -21,22 +21,22 @@ A powerful desktop utility for ARC Raiders that automatically detects item popup
 ## Installation
 
 1. **Install uv** (Python package manager):
-   
+
    On Windows (PowerShell):
    ```powershell
    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
    ```
-   
+
    On macOS/Linux:
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
-   
+
    Or with pip:
    ```bash
    pip install uv
    ```
-   
+
    More info: https://docs.astral.sh/uv/getting-started/installation/
 
 2. Clone this repository:
@@ -73,10 +73,11 @@ The tool will start in the background. When you see an item popup in ARC Raiders
 
 ## Configuration
 
-The tool uses the following data files from the ARC Data Compendium:
-- `Arc-Data-Compendium/src/data/items/itemData.json`
-- `Arc-Data-Compendium/src/data/quests/questData.json`
-- `Arc-Data-Compendium/src/data/workbenches/workbenchData.json`
+The tool uses the following data files from the https://github.com/RaidTheory/arcraiders-data:
+- `items.json`
+- `quests.json`
+- `hideoutModules.json`
+- `projects.json`
 
 Ensure these files are present in the correct relative paths.
 
@@ -106,7 +107,7 @@ Ensure these files are present in the correct relative paths.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the IDGAF License - see the LICENSE file for details.
 
 ## Credits
 
