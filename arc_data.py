@@ -3,7 +3,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from constants import ITEM_DATA_PATH, WORKBENCH_DATA_PATH, QUEST_DATA_PATH
+from constants import (
+    ITEM_DATA_PATH,
+    WORKBENCH_DATA_PATH,
+    QUEST_DATA_PATH,
+    PROJECTS_DATA_PATH,
+)
 
 
 class ArcData:
@@ -16,6 +21,7 @@ class ArcData:
             WORKBENCH_DATA_PATH
         )
         self.quests: list[dict[str, Any]] = self._load_json(QUEST_DATA_PATH)
+        self.projects: list[dict[str, Any]] = self._load_json(PROJECTS_DATA_PATH)
 
     @staticmethod
     def _load_json(path: Path) -> list[dict[str, Any]]:
@@ -25,39 +31,49 @@ class ArcData:
 
     def get_deps(
         self, item_id: str
-    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
         """
-        Get dependencies for the given item ID from quests and hideout modules.
+        Get dependencies for the given item ID from quests, hideout modules, and projects.
 
         Args:
             item_id: The ID of the item.
 
         Returns:
-            A tuple of (quest_deps, hideout_deps).
+            A tuple of (quest_deps, hideout_deps, project_deps).
         """
         quest_deps = [
             {
                 "name": quest["name"],
                 "trader": quest["trader"],
-                "count": requirement.get("count", 1),
+                "count": required_item.get("quantity", 1),
             }
             for quest in self.quests
-            if "requirements" in quest
-            for requirement in quest["requirements"]
-            if "links" in requirement
-            for link in requirement["links"]
-            if link["id"].strip() == item_id
+            if "requiredItemIds" in quest
+            for required_item in quest["requiredItemIds"]
+            if required_item["itemId"].strip() == item_id
         ]
         hideout_deps = [
             {
                 "name": hideout_module["name"],
-                "tier": hideout_levels["tier"],
-                "count": required_item_id["count"],
+                "tier": hideout_level["level"],
+                "count": required_item["quantity"],
             }
             for hideout_module in self.hideout_modules
-            for hideout_levels in hideout_module["tiers"]
-            if "requiredItems" in hideout_levels
-            for required_item_id in hideout_levels["requiredItems"]
-            if required_item_id["itemId"] == item_id
+            for hideout_level in hideout_module["levels"]
+            if "requirementItemIds" in hideout_level
+            for required_item in hideout_level["requirementItemIds"]
+            if required_item["itemId"] == item_id
         ]
-        return quest_deps, hideout_deps
+        project_deps = [
+            {
+                "name": project["name"],
+                "phase": phase["phase"],
+                "phase_name": phase["name"],
+                "count": required_item["quantity"],
+            }
+            for project in self.projects
+            for phase in project.get("phases", [])
+            for required_item in phase.get("requirementItemIds", [])
+            if required_item["itemId"] == item_id
+        ]
+        return quest_deps, hideout_deps, project_deps

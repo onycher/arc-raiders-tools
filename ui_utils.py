@@ -17,14 +17,50 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
         data: The ArcData instance.
     """
     console.clear()
-    quest_data, hideout_data = data.get_deps(item_data["id"])
+    quest_data, hideout_data, project_data = data.get_deps(item_data["id"])
 
     # Build content list
     content = []
 
     # Item header
-    item_text = Text(f"{item_data['name']}: {item_data['value']}$", style="bold green")
+    value = item_data.get("value", "N/A")
+    value_str = f"{value}$" if value != "N/A" else value
+    item_text = Text(f"{item_data['name']}: {value_str}", style="bold green")
     content.append(item_text)
+
+    # Recycles Into table
+    recycles_into = item_data.get("recyclesInto", {})
+    if recycles_into and isinstance(recycles_into, dict):
+        recycles_table = Table(
+            title="[bold yellow]Recycles Into[/bold yellow]",
+            title_style="bold yellow",
+            header_style="bold cyan",
+            border_style="yellow",
+            show_header=True,
+            show_lines=True,
+        )
+        recycles_table.add_column("Item", style="white", no_wrap=True)
+        recycles_table.add_column("Quantity", style="yellow", justify="right")
+        for item_id, quantity in recycles_into.items():
+            recycles_table.add_row(item_id.replace("_", " ").title(), str(quantity))
+        content.append(recycles_table)
+
+    # Salvages Into table
+    salvages_into = item_data.get("salvagesInto", {})
+    if salvages_into and isinstance(salvages_into, dict):
+        salvages_table = Table(
+            title="[bold cyan]Salvages Into[/bold cyan]",
+            title_style="bold cyan",
+            header_style="bold cyan",
+            border_style="cyan",
+            show_header=True,
+            show_lines=True,
+        )
+        salvages_table.add_column("Item", style="white", no_wrap=True)
+        salvages_table.add_column("Quantity", style="cyan", justify="right")
+        for item_id, quantity in salvages_into.items():
+            salvages_table.add_row(item_id.replace("_", " ").title(), str(quantity))
+        content.append(salvages_table)
 
     # Quest table
     if quest_data:
@@ -60,9 +96,37 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
             hideout_table.add_row(h["name"], str(h["tier"]), str(h["count"]))
         content.append(hideout_table)
 
-    # If no data
-    if not quest_data and not hideout_data:
-        no_data_text = Text("No dependencies found for this item.", style="italic red")
+    # Project table
+    if project_data:
+        project_table = Table(
+            title="[bold red]Projects[/bold red]",
+            title_style="bold red",
+            header_style="bold cyan",
+            border_style="red",
+            show_header=True,
+            show_lines=True,
+        )
+        project_table.add_column("Project", style="white", no_wrap=True)
+        project_table.add_column("Phase", style="white", justify="center")
+        project_table.add_column("Phase Name", style="white")
+        project_table.add_column("Count", style="yellow", justify="right")
+        for p in project_data:
+            project_table.add_row(
+                p["name"], str(p["phase"]), p["phase_name"], str(p["count"])
+            )
+        content.append(project_table)
+
+    # If no data at all
+    if (
+        not quest_data
+        and not hideout_data
+        and not project_data
+        and not recycles_into
+        and not salvages_into
+    ):
+        no_data_text = Text(
+            "No dependencies or crafting info found for this item.", style="italic red"
+        )
         content.append(no_data_text)
 
     # Create panel
