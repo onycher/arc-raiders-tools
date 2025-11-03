@@ -34,9 +34,11 @@ def on_hotkey_activate(data: ArcData, console: Console) -> None:
         item_id = ""
         for line in text.splitlines():
             item_id = line.strip().lower().replace(" ", "_")
-            if not any(i["id"] == item_id for i in data.items):
+            if item_id == "":
                 continue
-            item_data = next(i for i in data.items if i["id"] == item_id)
+            if not any(i["id"].startswith(item_id) for i in data.items):
+                continue
+            item_data = next(i for i in data.items if i["id"].startswith(item_id))
             print_item_info(console, item_data, data)
             return
         logging.info(f"Item not found: {item_id}")
