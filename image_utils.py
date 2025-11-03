@@ -33,7 +33,7 @@ def find_popup(
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
 
     # Confidence threshold
-    confidence_threshold = 0.7
+    confidence_threshold = 0.4
     if max_val < confidence_threshold:
         logging.warning(f"Template match confidence too low: {max_val:.2f}")
         return None
