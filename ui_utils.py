@@ -24,15 +24,10 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
     # Build content list
     content = []
 
-    # Item header (centered)
+    # Prepare title with item name and value
     value = item_data.get("value", "N/A")
     value_str = f"{value}$" if value != "N/A" else value
-    item_text = Text(f"{item_data['name']}: {value_str}", style="bold green")
-    centered_header = Align.center(item_text)
-    content.append(centered_header)
-
-    # Add blank line after header
-    content.append(Text(""))
+    panel_title = f"[bold green]{item_data['name']}: {value_str}[/bold green]"
 
     # Left column content (dependencies)
     left_content = []
@@ -174,7 +169,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
     # Create panel
     panel = Panel(
         Group(*content),
-        title="[bold green]🤖 ARC Raiders Item Info[/bold green]",
+        title=panel_title,
         border_style="green",
         padding=(1, 2),
     )
