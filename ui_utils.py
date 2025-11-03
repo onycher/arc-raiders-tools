@@ -2,6 +2,8 @@ from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
+from rich.columns import Columns
+from rich.align import Align
 from typing import Any
 
 from arc_data import ArcData
@@ -22,45 +24,18 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
     # Build content list
     content = []
 
-    # Item header
+    # Item header (centered)
     value = item_data.get("value", "N/A")
     value_str = f"{value}$" if value != "N/A" else value
     item_text = Text(f"{item_data['name']}: {value_str}", style="bold green")
-    content.append(item_text)
+    centered_header = Align.center(item_text)
+    content.append(centered_header)
 
-    # Recycles Into table
-    recycles_into = item_data.get("recyclesInto", {})
-    if recycles_into and isinstance(recycles_into, dict):
-        recycles_table = Table(
-            title="[bold yellow]Recycles Into[/bold yellow]",
-            title_style="bold yellow",
-            header_style="bold cyan",
-            border_style="yellow",
-            show_header=True,
-            show_lines=True,
-        )
-        recycles_table.add_column("Item", style="white", no_wrap=True)
-        recycles_table.add_column("Quantity", style="yellow", justify="right")
-        for item_id, quantity in recycles_into.items():
-            recycles_table.add_row(item_id.replace("_", " ").title(), str(quantity))
-        content.append(recycles_table)
+    # Add blank line after header
+    content.append(Text(""))
 
-    # Salvages Into table
-    salvages_into = item_data.get("salvagesInto", {})
-    if salvages_into and isinstance(salvages_into, dict):
-        salvages_table = Table(
-            title="[bold cyan]Salvages Into[/bold cyan]",
-            title_style="bold cyan",
-            header_style="bold cyan",
-            border_style="cyan",
-            show_header=True,
-            show_lines=True,
-        )
-        salvages_table.add_column("Item", style="white", no_wrap=True)
-        salvages_table.add_column("Quantity", style="cyan", justify="right")
-        for item_id, quantity in salvages_into.items():
-            salvages_table.add_row(item_id.replace("_", " ").title(), str(quantity))
-        content.append(salvages_table)
+    # Left column content (dependencies)
+    left_content = []
 
     # Quest table
     if quest_data:
@@ -77,7 +52,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
         quest_table.add_column("Count", style="yellow", justify="right")
         for q in quest_data:
             quest_table.add_row(q["name"], q["trader"], str(q["count"]))
-        content.append(quest_table)
+        left_content.append(quest_table)
 
     # Hideout table
     if hideout_data:
@@ -94,7 +69,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
         hideout_table.add_column("Count", style="yellow", justify="right")
         for h in hideout_data:
             hideout_table.add_row(h["name"], str(h["tier"]), str(h["count"]))
-        content.append(hideout_table)
+        left_content.append(hideout_table)
 
     # Project table
     if project_data:
@@ -114,7 +89,74 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
             project_table.add_row(
                 p["name"], str(p["phase"]), p["phase_name"], str(p["count"])
             )
-        content.append(project_table)
+        left_content.append(project_table)
+
+    # Right column content (recycle/salvage)
+    right_content = []
+
+    # Recycles Into table
+    recycles_into = item_data.get("recyclesInto", {})
+    if recycles_into and isinstance(recycles_into, dict):
+        # Calculate total recycle value
+        recycle_value = 0
+        for item_id, quantity in recycles_into.items():
+            recycle_item = next((i for i in data.items if i["id"] == item_id), None)
+            if recycle_item and "value" in recycle_item:
+                recycle_value += recycle_item["value"] * quantity
+
+        recycle_title = (
+            f"[bold yellow]Recycles Into (Total: {recycle_value}$)[/bold yellow]"
+        )
+        recycles_table = Table(
+            title=recycle_title,
+            title_style="bold yellow",
+            header_style="bold cyan",
+            border_style="yellow",
+            show_header=True,
+            show_lines=True,
+        )
+        recycles_table.add_column("Item", style="white", no_wrap=True)
+        recycles_table.add_column("Quantity", style="yellow", justify="right")
+        for item_id, quantity in recycles_into.items():
+            recycles_table.add_row(item_id.replace("_", " ").title(), str(quantity))
+        right_content.append(recycles_table)
+
+    # Salvages Into table
+    salvages_into = item_data.get("salvagesInto", {})
+    if salvages_into and isinstance(salvages_into, dict):
+        # Calculate total salvage value
+        salvage_value = 0
+        for item_id, quantity in salvages_into.items():
+            salvage_item = next((i for i in data.items if i["id"] == item_id), None)
+            if salvage_item and "value" in salvage_item:
+                salvage_value += salvage_item["value"] * quantity
+
+        salvage_title = (
+            f"[bold cyan]Salvages Into (Total: {salvage_value}$)[/bold cyan]"
+        )
+        salvages_table = Table(
+            title=salvage_title,
+            title_style="bold cyan",
+            header_style="bold cyan",
+            border_style="cyan",
+            show_header=True,
+            show_lines=True,
+        )
+        salvages_table.add_column("Item", style="white", no_wrap=True)
+        salvages_table.add_column("Quantity", style="cyan", justify="right")
+        for item_id, quantity in salvages_into.items():
+            salvages_table.add_row(item_id.replace("_", " ").title(), str(quantity))
+        right_content.append(salvages_table)
+
+    # Create two-column layout if we have content for both columns
+    if left_content or right_content:
+        # Create Groups for each column
+        left_group = Group(*left_content) if left_content else Text("")
+        right_group = Group(*right_content) if right_content else Text("")
+
+        # Add columns to content
+        columns = Columns([left_group, right_group], equal=True, expand=True)
+        content.append(columns)
 
     # If no data at all
     if (
@@ -127,7 +169,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
         no_data_text = Text(
             "No dependencies or crafting info found for this item.", style="italic red"
         )
-        content.append(no_data_text)
+        content.append(Align.center(no_data_text))
 
     # Create panel
     panel = Panel(
