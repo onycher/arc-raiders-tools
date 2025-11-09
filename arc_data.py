@@ -43,7 +43,7 @@ class ArcData:
         """
         quest_deps = [
             {
-                "name": quest["name"],
+                "name": quest["name"]["en"],
                 "trader": quest["trader"],
                 "count": required_item.get("quantity", 1),
             }
@@ -54,7 +54,7 @@ class ArcData:
         ]
         hideout_deps = [
             {
-                "name": hideout_module["name"],
+                "name": hideout_module["name"]["en"],
                 "tier": hideout_level["level"],
                 "count": required_item["quantity"],
             }
@@ -66,9 +66,9 @@ class ArcData:
         ]
         project_deps = [
             {
-                "name": project["name"],
+                "name": project["name"]["en"],
                 "phase": phase["phase"],
-                "phase_name": phase["name"],
+                "phase_name": phase["name"]["en"],
                 "count": required_item["quantity"],
             }
             for project in self.projects

@@ -27,7 +27,7 @@ def print_item_info(console: Console, item_data: dict[str, Any], data: ArcData) 
     # Prepare title with item name and value
     value = item_data.get("value", "N/A")
     value_str = f"{value}$" if value != "N/A" else value
-    panel_title = f"[bold green]{item_data['name']}: {value_str}[/bold green]"
+    panel_title = f"[bold green]{item_data['name']['en']}: {value_str}[/bold green]"
 
     # Left column content (dependencies)
     left_content = []
