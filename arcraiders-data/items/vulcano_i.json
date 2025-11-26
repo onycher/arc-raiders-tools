@@ -10,8 +10,8 @@
     "no": "Vulcano I",
     "da": "Vulcano I",
     "it": "Vulcano I",
-    "ru": "Vulcano I",
-    "ja": "Vulcano I",
+    "ru": "Вулкан I",
+    "ja": "ヴルカノ I",
     "zh-TW": "Vulcano I",
     "uk": "Vulcano I",
     "zh-CN": "Vulcano I",
@@ -55,7 +55,7 @@
   "imageFilename": "https://cdn.arctracker.io/items/vulcano.png",
   "updatedAt": "11/12/2025",
   "value": 10000,
-  "weightKg": 8.0,
+  "weightKg": 8,
   "recyclesInto": {
     "advanced_mechanical_components": 2,
     "heavy_gun_parts": 2
@@ -172,5 +172,6 @@
       "da": "ARC rustningspenetration",
       "value": "Weak"
     }
-  }
+  },
+  "isWeapon": true
 }

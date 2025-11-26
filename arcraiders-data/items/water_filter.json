@@ -11,7 +11,7 @@
     "da": "Vandfilter",
     "it": "Filtro per l'acqua",
     "ru": "Водяной фильтр",
-    "ja": "浄水フィルター",
+    "ja": "浄水器",
     "zh-TW": "濾水器",
     "uk": "Водяний фільтр",
     "zh-CN": "滤水器",
@@ -43,7 +43,7 @@
   "type": "Recyclable",
   "rarity": "Rare",
   "value": 1000,
-  "weightKg": 2.0,
+  "weightKg": 2,
   "stackSize": 3,
   "foundIn": "Industrial",
   "recyclesInto": {
